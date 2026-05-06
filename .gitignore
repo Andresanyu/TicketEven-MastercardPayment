@@ -10,6 +10,7 @@ build/
 .vscode/
 .idea/
 *.log
+logs/
 
 # Específico para Node.js
 package-lock.json  # Opcional, pero recomendado si trabajas en equipo
