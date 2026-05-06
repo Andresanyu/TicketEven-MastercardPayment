@@ -1,6 +1,3 @@
-/**
- * Controlador para simular la validación de pagos de Mastercard
- */
 
 const { MOCK_PAYMENT_SUCCESS } = require('../constants/config');
 
@@ -21,7 +18,7 @@ const validarTarjeta = (req, res) => {
     } else {
       return res.status(400).json({
         success: false,
-        mensaje: "Fondos insuficientes o tarjeta inválida"
+        mensaje: "Tarjeta inválida"
       });
     }
   } catch (error) {
