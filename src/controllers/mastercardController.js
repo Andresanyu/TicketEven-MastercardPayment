@@ -16,7 +16,7 @@ const maskCardNumber = (number) => {
 };
 
 /**
- * Valida una tarjeta de pago Mastercard
+ * Valida una tarjeta de pago Mastercarda
  * @param {Object} req - Objeto request de Express
  * @param {Object} res - Objeto response de Express
  */
