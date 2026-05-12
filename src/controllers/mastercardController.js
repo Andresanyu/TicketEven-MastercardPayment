@@ -2,11 +2,6 @@
 const logger = require('../utils/logger');
 const { MOCK_PAYMENT_SUCCESS } = require('../constants/config');
 
-/**
- * Enmascara el número de tarjeta dejando solo los últimos 4 dígitos
- * @param {string} cardNumber - Número de tarjeta
- * @returns {string} Tarjeta enmascarada (ej: ****1234)
- */
 const maskCardNumber = (cardNumber) => {
   if (!cardNumber || cardNumber.length < 4) {
     return '****';
@@ -15,11 +10,6 @@ const maskCardNumber = (cardNumber) => {
   return `****${lastFourDigits}`;
 };
 
-/**
- * Valida una tarjeta de pago Mastercard
- * @param {Object} req - Objeto request de Express
- * @param {Object} res - Objeto response de Express
- */
 const validarTarjeta = (req, res) => {
   try {
     const { number, cvc } = req.body || {};
