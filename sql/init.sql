@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS tarjetas_mastercard (
+  id SERIAL PRIMARY KEY,
+  number VARCHAR(50) NOT NULL,
+  cvc VARCHAR(10) NOT NULL,
+  saldo NUMERIC(12, 2) NOT NULL DEFAULT 0,
+  estado VARCHAR(20) NOT NULL DEFAULT 'activo'
+);
