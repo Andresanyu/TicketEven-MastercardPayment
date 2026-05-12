@@ -1,0 +1,17 @@
+services:
+  mastercard-db:
+    image: postgres:15-alpine
+    container_name: mastercard-db
+    restart: unless-stopped
+    ports:
+      - "5434:5432"
+    environment:
+      POSTGRES_USER: ${mastercard_user:-mastercard_user}
+      POSTGRES_PASSWORD: ${mastercard_pass:-mastercard_pass}
+      POSTGRES_DB: ${mastercard_database:-mastercard_database}
+    volumes:
+      - mastercard-db-data:/var/lib/postgresql/data
+      - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+
+volumes:
+  mastercard-db-data:
