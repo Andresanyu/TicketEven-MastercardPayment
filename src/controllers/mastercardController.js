@@ -2,13 +2,8 @@
 const logger = require('../utils/logger');
 const pool = require('../config/db');
 
-/**
- * Enmascara el número de tarjeta dejando solo los últimos 4 dígitos
- * @param {string} cardNumber - Número de tarjeta
- * @returns {string} Tarjeta enmascarada (ej: ****1234)
- */
-const maskCardNumber = (number) => {
-  if (!number || number.length < 4) {
+const maskCardNumber = (cardNumber) => {
+  if (!cardNumber || cardNumber.length < 4) {
     return '****';
   }
   const lastFourDigits = number.slice(-4);
