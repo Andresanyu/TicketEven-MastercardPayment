@@ -34,17 +34,26 @@ const validarTarjeta = async (req, res) => {
       });
     }
 
-    const query = `
+    const availabilityQuery = `
       SELECT id, number, cvc, saldo, estado
       FROM tarjetas_mastercard
-      WHERE number = $1 AND cvc = $2
+      WHERE number = $1
       LIMIT 1
     `;
 
-    const result = await pool.query(query, [number, cvc]);
-    const tarjeta = result.rows[0];
+    const availabilityResult = await pool.query(availabilityQuery, [number]);
+    const tarjeta = availabilityResult.rows[0];
 
-    if (tarjeta && tarjeta.estado === 'activo') {
+    if (!tarjeta) {
+      logger.warn(`Unregistered Mastercard client for card: ${maskedCard}`);
+      return res.status(200).json({
+        payment_status: 'FAILED',
+        reason_code: 'UNREGISTERED_CLIENT',
+        message: 'Cliente no registrado en la red Mastercard'
+      });
+    }
+
+    if (tarjeta.cvc === cvc && tarjeta.estado === 'activo') {
       logger.info(`Payment validation successful for card: ${maskedCard}`);
       return res.status(200).json({
         payment_status: 'OK',
