@@ -10,7 +10,12 @@ const maskCardNumber = (cardNumber) => {
   return `****${lastFourDigits}`;
 };
 
-const validarTarjeta = (req, res) => {
+/**
+ * Valida una tarjeta de pago Mastercarda
+ * @param {Object} req - Objeto request de Express
+ * @param {Object} res - Objeto response de Express
+ */
+const validarTarjeta = async (req, res) => {
   try {
     const { number, cvc } = req.body || {};
     const maskedCard = number ? maskCardNumber(number) : 'Unknown';
