@@ -6,7 +6,7 @@ const maskCardNumber = (cardNumber) => {
   if (!cardNumber || cardNumber.length < 4) {
     return '****';
   }
-  const lastFourDigits = number.slice(-4);
+  const lastFourDigits = cardNumber.slice(-4);
   return `****${lastFourDigits}`;
 };
 
