@@ -3,12 +3,13 @@
  */
 
 const app = require('./src/app');
+const logger = require('./src/utils/logger');
 
 // Puerto en el que escucha el servidor
 const PORT = process.env.PORT || 3002;
 
 app.listen(PORT, () => {
-  console.log(`✅ Servidor de Mastercard Payment iniciado en puerto ${PORT}`);
-  console.log(`📍 Health check: http://localhost:${PORT}/health`);
-  console.log(`🔗 Endpoint de validación: POST http://localhost:${PORT}/api/v1/mastercard/validar`);
+  logger.info(`Servidor de Mastercard Payment iniciado en puerto ${PORT}`);
+  logger.info(`Health check: http://localhost:${PORT}/health`);
+  logger.info(`Endpoint de validación: POST http://localhost:${PORT}/api/v1/mastercard/validar`);
 });
