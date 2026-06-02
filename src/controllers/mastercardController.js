@@ -24,8 +24,8 @@ const sanitizeTransactionPayload = (payload = {}) => {
   return sanitizedPayload;
 };
 
-const logVisaResponse = (approved, motivoRechazo) => {
-  logger.info(`[VISA -> PASARELA] Transacción resuelta por Visa. Respuesta: ${JSON.stringify({
+const logMastercardResponse = (approved, motivoRechazo) => {
+  logger.info(`[MASTERCARD -> PASARELA] Transacción resuelta por Mastercard. Respuesta: ${JSON.stringify({
     aprobado: approved,
     motivo_rechazo: motivoRechazo || null
   })}`);
@@ -41,7 +41,7 @@ const validarTarjeta = async (req, res) => {
     const { number, cvc } = req.body || {};
     const maskedCard = number ? maskCardNumber(number) : 'Unknown';
 
-    logger.info(`[VISA <- PASARELA] Transacción recibida por Visa. Payload: ${JSON.stringify(sanitizeTransactionPayload(req.body || {}))}`);
+    logger.info(`[MASTERCARD <- PASARELA] Transacción recibida por Mastercard. Payload: ${JSON.stringify(sanitizeTransactionPayload(req.body || {}))}`);
 
     if (!number || !cvc) {
       logger.warn(`Invalid Mastercard request payload for card: ${maskedCard}`);
@@ -50,7 +50,7 @@ const validarTarjeta = async (req, res) => {
         reason_code: 'INVALID_REQUEST',
         message: 'Request body must include number and cvc'
       };
-      logVisaResponse(false, responsePayload.reason_code);
+      logMastercardResponse(false, responsePayload.reason_code);
       return res.status(400).json({
         error: 'Request body must include number and cvc'
       });
@@ -68,7 +68,7 @@ const validarTarjeta = async (req, res) => {
 
     if (!tarjeta) {
       logger.warn(`Unregistered Mastercard client for card: ${maskedCard}`);
-      logVisaResponse(false, 'UNREGISTERED_CLIENT');
+      logMastercardResponse(false, 'UNREGISTERED_CLIENT');
       return res.status(200).json({
         payment_status: 'FAILED',
         reason_code: 'UNREGISTERED_CLIENT',
@@ -78,7 +78,7 @@ const validarTarjeta = async (req, res) => {
 
     if (tarjeta.cvc === cvc && tarjeta.estado === 'activo') {
       logger.info(`Payment validation successful for card: ${maskedCard}`);
-      logVisaResponse(true, null);
+      logMastercardResponse(true, null);
       return res.status(200).json({
         payment_status: 'OK',
         description: 'Pago aprobado por Mastercard',
@@ -87,7 +87,7 @@ const validarTarjeta = async (req, res) => {
     }
 
     logger.warn(`Payment validation failed for card: ${maskedCard}`);
-    logVisaResponse(false, 'DECLINED_MC');
+    logMastercardResponse(false, 'DECLINED_MC');
     return res.status(200).json({
       payment_status: 'FAILED',
       description: 'Fondos insuficientes o tarjeta inválida',
